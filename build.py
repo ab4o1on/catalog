@@ -23,16 +23,18 @@ def download_file(path, output_dir):
         print(f"Downloading {path} to {output_dir}")
         os.system(f"wget {path} -O {output_dir}")
 
+    return str(path).split('/')[-1]
+
 def gen_static_folder(manifest, type, output_dir):
     static_files_path = output_dir+"/static"
 
     os.makedirs(static_files_path, exist_ok=True)
 
     if type == "app":
-        download_file(manifest['executionfile']['location'], static_files_path)
+        manifest['executionfile']['location'] = download_file(manifest['executionfile']['location'], static_files_path)
     elif type == "mod":
         for file in manifest['modfiles']:
-            download_file(file['location'], static_files_path)
+            file['location'] = download_file(file['location'], static_files_path)
     else:
         pass
 
@@ -48,6 +50,8 @@ def gen_static_folder(manifest, type, output_dir):
     else:
         os.system(f"cp {os.path.join(path_to_modapp, manifest['icon'])} {static_files_path}")
 
+    return manifest
+
 def process_manifest(manifest, type):
     output_dir = os.path.join("./build", type+"s", manifest['path'])
 
@@ -57,7 +61,7 @@ def process_manifest(manifest, type):
         def escape_for_json(value):
             return json.dumps(value).strip('"')
         
-        gen_static_folder(manifest, type, output_dir)
+        manifest = gen_static_folder(manifest, type, output_dir)
 
         if type == "app":
             with open(os.path.join(output_dir, 'index_short.json'), 'w') as file:
