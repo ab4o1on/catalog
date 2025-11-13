@@ -126,6 +126,8 @@ class LilkaRepository {
         
         // Hide items content, show docs
         document.getElementById('content').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'none';
         const docsContainer = document.getElementById('docs');
         docsContainer.style.display = 'block';
         
@@ -142,6 +144,11 @@ class LilkaRepository {
     }
 
     async loadPage() {
+        // Don't load if we're on docs tab
+        if (this.currentType === 'docs') {
+            return;
+        }
+        
         this.showLoading(true);
         this.hideError();
 
@@ -313,11 +320,11 @@ class LilkaRepository {
             ${screenshotsSection}
             <div class="modal-section">
                 <h3>📝 Description</h3>
-                <pre>${this.escapeHtml(manifest.description)}</pre>
+                <div class="markdown-content">${marked.parse(manifest.description)}</div>
             </div>
             <div class="modal-section">
                 <h3>📋 Changelog</h3>
-                <pre>${this.escapeHtml(manifest.changelog)}</pre>
+                <div class="markdown-content">${marked.parse(manifest.changelog)}</div>
             </div>
             ${filesSection}
             ${sourcesSection}

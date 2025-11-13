@@ -373,6 +373,90 @@ main {
     font-family: 'Courier New', monospace;
 }
 
+/* Markdown content in modals */
+.modal-section .markdown-content {
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.modal-section .markdown-content h1,
+.modal-section .markdown-content h2,
+.modal-section .markdown-content h3 {
+    color: var(--text-primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.modal-section .markdown-content h1 {
+    font-size: 1.5rem;
+}
+
+.modal-section .markdown-content h2 {
+    font-size: 1.3rem;
+}
+
+.modal-section .markdown-content h3 {
+    font-size: 1.1rem;
+}
+
+.modal-section .markdown-content p {
+    margin-bottom: 1rem;
+}
+
+.modal-section .markdown-content ul,
+.modal-section .markdown-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-section .markdown-content li {
+    margin-bottom: 0.5rem;
+}
+
+.modal-section .markdown-content code {
+    background-color: var(--background);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.modal-section .markdown-content pre {
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.modal-section .markdown-content pre code {
+    background: none;
+    padding: 0;
+}
+
+.modal-section .markdown-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.modal-section .markdown-content a:hover {
+    text-decoration: underline;
+}
+
+.modal-section .markdown-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.modal-section .markdown-content strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
 /* Screenshots Gallery */
 .screenshots-gallery {
     display: grid;
