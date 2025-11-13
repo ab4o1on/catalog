@@ -7,25 +7,26 @@ import html
 import json
 
 args = argparse.ArgumentParser(description="Builds the keira app and mod files")
-args.add_argument("--build", help="Build json files for mods and apps", default=False)
-args.add_argument("--shortjson", help="Build short json files for mods and apps", default=False)
+args.add_argument("--build", help="Build json files for mods and apps", action='store_true', default=False)
+args.add_argument("--shortjson", help="Build short json files for mods and apps", action='store_true', default=False)
 args = args.parse_args()
 
-def download_file(path, output_dir):
+def download_file(path, output_dir) -> str:
     url = path['origin'] if isinstance(path, dict) else path
     response = requests.head(url)
 
-    output_dir = os.path.join(output_dir, str(path).split('/')[-1])
+    filename = url.split('/')[-1]
+    output_path = os.path.join(output_dir, filename)
 
     if response.status_code == 404:
-        raise FileNotFoundError(f"File not found: {path}")
+        raise FileNotFoundError(f"File not found: {url}")
     if(args.build):
-        print(f"Downloading {path} to {output_dir}")
-        os.system(f"wget {path} -O {output_dir}")
+        print(f"Downloading {url} to {output_path}")
+        os.system(f"wget '{url}' -O '{output_path}'")
 
-    return str(path).split('/')[-1]
+    return filename
 
-def gen_static_folder(manifest, type, output_dir):
+def gen_static_folder(manifest, type, output_dir) -> dict:
     static_files_path = output_dir+"/static"
 
     os.makedirs(static_files_path, exist_ok=True)
@@ -52,7 +53,7 @@ def gen_static_folder(manifest, type, output_dir):
 
     return manifest
 
-def process_manifest(manifest, type):
+def process_manifest(manifest, type) -> None:
     output_dir = os.path.join("./build", type+"s", manifest['path'])
 
     if args.build:
@@ -89,8 +90,8 @@ def process_manifest(manifest, type):
             file.write('}\n')
 
 
-def gen_json_index_manifests(manifests, type):
-    jsons_per_page = 10
+def gen_json_index_manifests(manifests, type) -> None:
+    jsons_per_page = 12
     page = 1
     jsons = []
     pages = len(manifests) // jsons_per_page
@@ -104,18 +105,20 @@ def gen_json_index_manifests(manifests, type):
             file.write(f'  "page": {i},\n')
             file.write(f'  "total_pages": {pages},\n')
             file.write(f'  "manifests": [\n')
+            page_manifests = []
             for j in range(0, jsons_per_page):
                 if i*jsons_per_page+j >= len(manifests):
                     break
-                file.write(f'    "{manifests[i*jsons_per_page+j]}",\n')
+                page_manifests.append(f'    "{manifests[i*jsons_per_page+j]}"')
+            file.write(',\n'.join(page_manifests) + '\n')
             file.write('  ]\n')
             file.write('}\n')
         
 
-def check_folder_sturcture(folder):
+def check_folder_sturcture(folder) -> bool:
     return os.path.isfile(os.path.join(folder, 'manifest.yml'))
 
-def check_manifest(src, type):
+def check_manifest(src, type) -> dict:
     manifest_path = os.path.join(type+"s", src, 'manifest.yml')
     print(manifest_path)
     with open(manifest_path, 'r') as file:
@@ -202,10 +205,10 @@ def check_manifest(src, type):
         return manifest
         
 
-def scan_apps_folder():
+def scan_apps_folder() -> list[str]:
     return [d for d in os.listdir('./apps') if os.path.isdir(os.path.join('./apps', d))]
 
-def scan_mods_folder():
+def scan_mods_folder() -> list[str]:
     return [d for d in os.listdir('./mods') if os.path.isdir(os.path.join('./mods', d))]
 
 def process_apps_folder(apps):
@@ -225,8 +228,8 @@ def process_mods_folder(mods):
             raise ValueError(f"Incorrect folder structure for app: {mod}")
         
 def main():
-    apps = scan_apps_folder()
-    mods = scan_mods_folder()
+    apps: list[str] = scan_apps_folder()
+    mods: list[str] = scan_mods_folder()
 
     print(apps)
     print(mods)
