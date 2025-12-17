@@ -6,7 +6,7 @@ sources:
 executionfile:
   type: binary
   location:
-    origin: https://github.com/lilka-dev/BLE_Controller/releases/download/v1.0.0/BLE_Controller_merged_uk.bin
+    origin: https://github.com/lilka-dev/BLE_Controller/releases/download/v1.0.0/BLE_Controller_uk.bin
 short_description: Багаторежимний Bluetooth HID контролер для Lilka v2 (Геймпад/Миша/Клавіатура)
 description: "@DESCRIPTION.md"
 author: "@lilka-dev"
