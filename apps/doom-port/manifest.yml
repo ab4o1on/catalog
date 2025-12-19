@@ -1,0 +1,17 @@
+name: Doom Port (C/C++)
+sources:
+  type: git
+  location:
+    origin: https://github.com/lilka-dev/doom_port
+executionfile:
+  type: binary
+  location:
+    origin: https://github.com/lilka-dev/doom_port/releases/download/v1.0.0/doom.bin
+short_description: Порт класичної гри Doom для Лілки на ESP32-S3
+description: "@DESCRIPTION.md"
+author: "@and3rson"
+license: GPLv2 (Doom є власністю id Software)
+keira_version: 1.0.0
+icon: image.png
+screenshots:
+  - image.png
